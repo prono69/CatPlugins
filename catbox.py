@@ -44,7 +44,7 @@ async def handler(event):
         if upload_link:
             await kk.edit(f"✘ **File Uploaded to Catbox!** \n>> __{upload_link}__")
         else:
-            await kk.edit("__Failed to upload the file to Catbox."__)
+            await kk.edit("__Failed to upload the file to Catbox.__")
         
         # Optionally delete the downloaded file to clean up
         os.remove(file_path)
