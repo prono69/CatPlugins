@@ -1,6 +1,7 @@
 import os
 import requests
-from . import catub, eor, eod
+from userbot import catub
+from userbot.core.managers import edit_delete, edit_or_reply
 
 plugin_category = "extra"
 
@@ -38,7 +39,7 @@ async def handler(event):
     reply = await event.get_reply_message()
     if event.is_reply and reply.media:
         file_path = await reply.download_media()
-        kk = await eor(event, "`Uploading...`")
+        kk = await edit_or_reply(event, "`Uploading...`")
         
         upload_link = upload_to_catbox(file_path)
         if upload_link:
@@ -49,4 +50,4 @@ async def handler(event):
         # Optionally delete the downloaded file to clean up
         os.remove(file_path)
     else:
-        await eod(event, "__Please send a file along with the command.__")
+        await edit_delete(event, "__Please send a file along with the command.__")
