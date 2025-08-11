@@ -1,28 +1,14 @@
 import os
 import requests
 from userbot import catub
+from catbox import CatboxUploader
 from userbot.core.managers import edit_delete, edit_or_reply
 from userbot.sql_helper.globals import addgvar, gvarstatus
 
 plugin_category = "extra"
 
-def upload_to_catbox(file_path, userhash=None):
-    url = 'https://catbox.moe/user/api.php'
-    data = {
-        'reqtype': 'fileupload',
-        'userhash': userhash
-    }
-
-    with open(file_path, 'rb') as f:
-        files = {
-            'fileToUpload': f
-        }
-        response = requests.post(url, data=data, files=files)
-        
-        if response.status_code == 200:
-            return response.text
-        else:
-            return f"Error: {response.status_code} - {response.text}"
+userhash = gvarstatus("CATBOX") if gvarstatus("CATBOX") else None
+cat_uploader = CatboxUploader(userhash=userhash)
 
 def upload_to_envs(file_path):
     url = 'https://envs.sh'
@@ -56,13 +42,12 @@ async def catbox(event):
     if event.is_reply and reply.media:
         kk = await edit_or_reply(event, "`Uploading...`")
         file_path = await reply.download_media()
-        userhash = gvarstatus("CATBOX") if gvarstatus("CATBOX") else None
         
         if flag == "e":
             upload_link = upload_to_envs(file_path)
             server = "Envs"
         else:
-            upload_link = upload_to_catbox(file_path, userhash=userhash)
+            upload_link = cat_uploader.upload_file(file_path)
             server = "Catbox"
         
         if upload_link and not upload_link.startswith("Error"):
