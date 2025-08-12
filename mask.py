@@ -2,10 +2,10 @@
 
 import os
 
-from telegraph import exceptions, upload_file
+from telegraph import exceptions
 from telethon.errors.rpcerrorlist import YouBlockedUserError
 from telethon.tl.functions.contacts import UnblockRequest as unblock
-from userbot import Convert, catub
+from userbot import Convert, catub, upload_file
 from userbot.core.managers import edit_delete, edit_or_reply
 from userbot.helpers.functions import delete_conv
 from userbot.plugins import awooify, baguette, iphonex, lolice
@@ -90,7 +90,7 @@ async def _(event):
     except exceptions.TelegraphException as exc:
         os.remove(output[1])
         return await edit_or_reply(output[0], f"ERROR: {str(exc)}")
-    cat = f"https://telegra.ph{response[0]}"
+    cat = f"{response}"
     cat = await awooify(cat)
     await output[0].delete()
     await event.client.send_file(event.chat_id, cat, reply_to=replied)
@@ -132,7 +132,7 @@ async def _(event):
     except exceptions.TelegraphException as exc:
         os.remove(output[1])
         return await edit_or_reply(output[0], f"ERROR: {str(exc)}")
-    cat = f"https://telegra.ph{response[0]}"
+    cat = f"{response}"
     cat = await lolice(cat)
     await output[0].delete()
     await event.client.send_file(event.chat_id, cat, reply_to=replied)
@@ -174,7 +174,7 @@ async def _(event):
     except exceptions.TelegraphException as exc:
         os.remove(output[1])
         return await edit_or_reply(output[0], f"ERROR: {str(exc)}")
-    cat = f"https://telegra.ph{response[0]}"
+    cat = f"{response}"
     cat = await baguette(cat)
     await output[0].delete()
     await event.client.send_file(event.chat_id, cat, reply_to=replied)
@@ -216,7 +216,7 @@ async def _(event):
     except exceptions.TelegraphException as exc:
         os.remove(output[1])
         return await edit_or_reply(output[0], f"ERROR: {str(exc)}")
-    cat = f"https://telegra.ph{response[0]}"
+    cat = f"{response}"
     cat = await iphonex(cat)
     await output[0].delete()
     await event.client.send_file(event.chat_id, cat, reply_to=replied)
