@@ -1,6 +1,5 @@
 import os
-import requests
-from userbot import catub
+from userbot import catub, upload_envs
 from catbox import CatboxUploader
 from userbot.core.managers import edit_delete, edit_or_reply
 from userbot.sql_helper.globals import addgvar, gvarstatus
@@ -10,19 +9,6 @@ plugin_category = "extra"
 userhash = gvarstatus("CATBOX") if gvarstatus("CATBOX") else None
 cat_uploader = CatboxUploader(userhash=userhash)
 
-def upload_to_envs(file_path):
-    url = 'https://envs.sh'
-    with open(file_path, 'rb') as f:
-        files = {
-            'file': f
-        }
-        response = requests.post(url, files=files)
-        if response.status_code == 200:
-            response_text = response.text
-            url_ = response_text.split(' ')[-1]
-            return url_
-        else:
-            return f"Error: {response.status_code} - {response.text}"
             
 @catub.cat_cmd(
     pattern="catb ?(.*)$",
@@ -44,7 +30,7 @@ async def catbox(event):
         file_path = await reply.download_media()
         
         if flag == "e":
-            upload_link = upload_to_envs(file_path)
+            upload_link = await upload_envs(file_path)
             server = "Envs"
         else:
             upload_link = cat_uploader.upload_file(file_path)
